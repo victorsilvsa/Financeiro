@@ -2,794 +2,829 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eu mesmo financias Dashboard Financeiro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/_sdk/element_sdk.js"></script>
-    <style>
-        body {
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eu mesmo financias Dashboard Financeiro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
 
-            to {
-                opacity: 1;
-            }
-        }
+      to {
+        opacity: 1;
+      }
+    }
 
-        @keyframes pulse {
+    @keyframes pulse {
 
-            0%,
-            100% {
-                opacity: 1;
-            }
+      0%,
+      100% {
+        opacity: 1;
+      }
 
-            50% {
-                opacity: 0.5;
-            }
-        }
+      50% {
+        opacity: 0.5;
+      }
+    }
 
-        @keyframes countUp {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
+    @keyframes countUp {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
 
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
 
-        .animate-slide-in {
-            animation: slideIn 0.3s ease-out;
-        }
+    .animate-slide-in {
+      animation: slideIn 0.3s ease-out;
+    }
 
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-out;
-        }
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out;
+    }
 
-        .animate-pulse-slow {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+    .animate-pulse-slow {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
 
-        .animate-count-up {
-            animation: countUp 0.5s ease-out;
-        }
+    .animate-count-up {
+      animation: countUp 0.5s ease-out;
+    }
 
-        .modal-backdrop {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
 
-        .card-hover {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
 
-        .progress-ring {
-            transition: stroke-dashoffset 0.5s ease;
-        }
+    .progress-ring {
+      transition: stroke-dashoffset 0.5s ease;
+    }
 
-        .bottom-nav {
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        }
+    .bottom-nav {
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
 
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-        .salary-counter {
-            font-variant-numeric: tabular-nums;
-            transition: all 0.3s ease;
-        }
+    .salary-counter {
+      font-variant-numeric: tabular-nums;
+      transition: all 0.3s ease;
+    }
 
-        .chart-bar {
-            transition: height 0.5s ease;
-        }
+    .chart-bar {
+      transition: height 0.5s ease;
+    }
 
-        .progress-bar {
-            transition: width 0.8s ease;
-        }
+    .progress-bar {
+      transition: width 0.8s ease;
+    }
 
-        .notification-enter {
-            animation: slideIn 0.3s ease-out;
-        }
+    .notification-enter {
+      animation: slideIn 0.3s ease-out;
+    }
 
-        .notification-exit {
-            animation: slideIn 0.3s ease-out reverse;
-        }
-    </style>
-    <style>
-        @view-transition {
-            navigation: auto;
-        }
-    </style>
-    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    .notification-exit {
+      animation: slideIn 0.3s ease-out reverse;
+    }
+  </style>
+  <style>
+    @view-transition {
+      navigation: auto;
+    }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
 </head>
 
 <body class="bg-gray-50" style="background-color: #f5f6f8;"><!-- Layout Principal -->
-    <div id="app" class="flex h-full"><!-- Sidebar Esquerda (Desktop) -->
-        <aside id="sidebar" class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200">
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center text-white font-bold text-lg"
-                        id="userAvatar">
-                        V
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-gray-800" id="userName">Victor</h2>
-                        <p class="text-xs text-gray-500" id="currentMonth">Janeiro 2024</p>
-                    </div>
-                </div>
-            </div>
-            <nav class="flex-1 p-4 space-y-2"><button onclick="navigateTo('dashboard')"
-                    class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors bg-emerald-50 text-emerald-800">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                        </path>
-                    </svg><span class="font-medium">Dashboard</span> </button> <button onclick="navigateTo('income')"
-                    class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                        </path>
-                    </svg><span class="font-medium">Entradas</span> </button> <button onclick="navigateTo('expenses')"
-                    class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
-                        </path>
-                    </svg><span class="font-medium">Despesas</span> </button> <button
-                    onclick="navigateTo('investments')"
-                    class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                    </svg><span class="font-medium">Investimentos</span> </button> <button onclick="navigateTo('goals')"
-                    class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg><span class="font-medium">Metas</span> </button> <button onclick="navigateTo('settings')"
-                    class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg><span class="font-medium">Configurações</span> </button>
-            </nav>
-        </aside><!-- Conteúdo Principal -->
-        <main class="flex-1 overflow-y-auto pb-20 lg:pb-0"><!-- Header Mobile -->
-            <header class="lg:hidden bg-white border-b border-gray-200 p-4 sticky top-0 z-10">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center text-white font-bold"
-                            id="userAvatarMobile">
-                            V
-                        </div>
-                        <div>
-                            <h2 class="font-bold text-gray-800" id="userNameMobile">Victor</h2>
-                            <p class="text-xs text-gray-500" id="currentMonthMobile">Janeiro 2024</p>
-                        </div>
-                    </div><button onclick="showQuickAdd()" class="p-2 bg-emerald-800 text-white rounded-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
-                            </path>
-                        </svg></button>
-                </div>
-            </header><!-- Conteúdo das Páginas -->
-            <div id="pageContent" class="p-4 lg:p-8"></div>
-        </main><!-- Sidebar Direita (Desktop) -->
-        <aside id="rightSidebar" class="hidden xl:flex flex-col w-80 bg-white border-l border-gray-200">
-            <div class="p-6 border-b border-gray-200">
-                <h3 class="font-bold text-gray-800 text-lg">Adição Rápida</h3>
-            </div>
-            <div class="flex-1 p-6 overflow-y-auto scrollbar-hide">
-                <form id="quickAddForm" class="space-y-4">
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label> <select id="quickType"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                            <option value="income">Entrada</option>
-                            <option value="expense">Despesa</option>
-                            <option value="investment">Investimento</option>
-                        </select>
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Categoria</label> <select
-                            id="quickCategory"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                            <option value="salary">Salário</option>
-                            <option value="freelance">Freelance</option>
-                            <option value="bonus">Bônus</option>
-                        </select>
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Valor</label> <input type="number"
-                            id="quickAmount" step="0.01" placeholder="0.00"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label> <input
-                            type="text" id="quickDescription" placeholder="Descrição opcional"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Método de Pagamento</label> <select
-                            id="quickPayment"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                            <option value="cash">Dinheiro</option>
-                            <option value="debit">Débito</option>
-                            <option value="credit">Crédito</option>
-                            <option value="pix">PIX</option>
-                            <option value="transfer">Transferência</option>
-                        </select>
-                    </div><button type="submit"
-                        class="w-full bg-emerald-800 text-white py-3 rounded-lg font-medium hover:bg-emerald-900 transition-colors">
-                        Adicionar Transação </button>
-                </form><!-- Alertas -->
-                <div id="alertsContainer" class="mt-6 space-y-3"></div>
-            </div>
-        </aside>
-    </div><!-- Bottom Navigation (Mobile) -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 bottom-nav z-20">
-        <div class="flex justify-around items-center h-16"><button onclick="navigateTo('dashboard')"
-                class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-emerald-800">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                    </path>
-                </svg><span class="text-xs mt-1">Home</span> </button> <button onclick="navigateTo('income')"
-                class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                    </path>
-                </svg><span class="text-xs mt-1">Entradas</span> </button> <button onclick="navigateTo('expenses')"
-                class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
-                    </path>
-                </svg><span class="text-xs mt-1">Despesas</span> </button> <button onclick="navigateTo('investments')"
-                class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                </svg><span class="text-xs mt-1">Investir</span> </button> <button onclick="navigateTo('goals')"
-                class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg><span class="text-xs mt-1">Metas</span> </button>
+  <div id="app" class="flex h-full"><!-- Sidebar Esquerda (Desktop) -->
+    <aside id="sidebar" class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex items-center space-x-3">
+          <div
+            class="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center text-white font-bold text-lg"
+            id="userAvatar">
+            V
+          </div>
+          <div>
+            <h2 class="font-bold text-gray-800" id="userName">Victor</h2>
+            <p class="text-xs text-gray-500" id="currentMonth">Janeiro 2024</p>
+          </div>
         </div>
-    </nav><!-- Modal de Transação -->
-    <div id="transactionModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
-        <div class="flex items-center justify-center min-h-full p-4">
-            <div class="modal-backdrop fixed inset-0" onclick="closeModal()"></div>
-            <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full p-6 animate-slide-in">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold text-gray-800" id="modalTitle">Nova Transação</h3><button
-                        onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg></button>
-                </div>
-                <form id="transactionForm" class="space-y-4"><input type="hidden" id="editId">
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label> <select id="modalType"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                            <option value="income">Entrada</option>
-                            <option value="expense">Despesa</option>
-                            <option value="investment">Investimento</option>
-                        </select>
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Categoria</label> <select
-                            id="modalCategory"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                            <option value="salary">Salário</option>
-                        </select>
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Valor</label> <input type="number"
-                            id="modalAmount" step="0.01" placeholder="0.00" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label> <input
-                            type="text" id="modalDescription" placeholder="Descrição opcional"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Método de Pagamento</label> <select
-                            id="modalPayment"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                            <option value="cash">Dinheiro</option>
-                            <option value="debit">Débito</option>
-                            <option value="credit">Crédito</option>
-                            <option value="pix">PIX</option>
-                            <option value="transfer">Transferência</option>
-                        </select>
-                    </div>
-                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Data</label> <input type="date"
-                            id="modalDate" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
-                    </div>
-                    <div class="flex space-x-3 pt-4"><button type="button" onclick="closeModal()"
-                            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                            Cancelar </button> <button type="submit" id="modalSubmitBtn"
-                            class="flex-1 px-4 py-2 bg-emerald-800 text-white rounded-lg hover:bg-emerald-900 transition-colors">
-                            Salvar </button>
-                    </div>
-                </form>
+      </div>
+      <nav class="flex-1 p-4 space-y-2"><button onclick="navigateTo('dashboard')"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors bg-emerald-50 text-emerald-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+            </path>
+          </svg><span class="font-medium">Dashboard</span> </button> <button onclick="navigateTo('income')"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+            </path>
+          </svg><span class="font-medium">Entradas</span> </button> <button onclick="navigateTo('expenses')"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+            </path>
+          </svg><span class="font-medium">Despesas</span> </button> <button onclick="navigateTo('investments')"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6">
+            </path>
+          </svg><span class="font-medium">Investimentos</span> </button> <button onclick="navigateTo('goals')"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg><span class="font-medium">Metas</span> </button> <button onclick="navigateTo('settings')"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+            </path>
+          </svg><span class="font-medium">Configurações</span> </button>
+      </nav>
+    </aside><!-- Conteúdo Principal -->
+    <main class="flex-1 overflow-y-auto pb-20 lg:pb-0"><!-- Header Mobile -->
+      <header class="lg:hidden bg-white border-b border-gray-200 p-4 sticky top-0 z-10">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center text-white font-bold"
+              id="userAvatarMobile">
+              V
             </div>
-        </div>
-    </div><!-- Confirmação de Exclusão -->
-    <div id="confirmModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
-        <div class="flex items-center justify-center min-h-full p-4">
-            <div class="modal-backdrop fixed inset-0" onclick="closeConfirmModal()"></div>
-            <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full p-6 animate-slide-in">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold text-gray-800">Confirmar Ação</h3><button onclick="closeConfirmModal()"
-                        class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg></button>
-                </div>
-                <p id="confirmMessage" class="text-gray-600 mb-6">Tem certeza que deseja continuar?</p>
-                <div class="flex space-x-3"><button onclick="closeConfirmModal()"
-                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                        Cancelar </button> <button id="confirmBtn"
-                        class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                        Confirmar </button>
-                </div>
+            <div>
+              <h2 class="font-bold text-gray-800" id="userNameMobile">Victor</h2>
+              <p class="text-xs text-gray-500" id="currentMonthMobile">Janeiro 2024</p>
             </div>
+          </div><button onclick="showQuickAdd()" class="p-2 bg-emerald-800 text-white rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+              </path>
+            </svg></button>
         </div>
-    </div><!-- Toast de Notificação -->
-    <div id="toast" class="hidden fixed top-4 right-4 z-50 bg-white rounded-lg shadow-lg p-4 max-w-sm animate-slide-in">
-        <div class="flex items-start space-x-3">
-            <div id="toastIcon" class="flex-shrink-0"></div>
-            <div class="flex-1">
-                <p id="toastMessage" class="text-sm font-medium text-gray-800"></p>
-            </div><button onclick="hideToast()" class="flex-shrink-0 text-gray-400 hover:text-gray-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
-                </svg></button>
-        </div>
+      </header><!-- Conteúdo das Páginas -->
+      <div id="pageContent" class="p-4 lg:p-8"></div>
+    </main><!-- Sidebar Direita (Desktop) -->
+    <aside id="rightSidebar" class="hidden xl:flex flex-col w-80 bg-white border-l border-gray-200">
+      <div class="p-6 border-b border-gray-200">
+        <h3 class="font-bold text-gray-800 text-lg">Adição Rápida</h3>
+      </div>
+      <div class="flex-1 p-6 overflow-y-auto scrollbar-hide">
+        <form id="quickAddForm" class="space-y-4">
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label> <select id="quickType"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+              <option value="income">Entrada</option>
+              <option value="expense">Despesa</option>
+              <option value="investment">Investimento</option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Categoria</label> <select id="quickCategory"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+              <option value="salary">Salário</option>
+              <option value="freelance">Freelance</option>
+              <option value="bonus">Bônus</option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Valor</label> <input type="number"
+              id="quickAmount" step="0.01" placeholder="0.00"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label> <input type="text"
+              id="quickDescription" placeholder="Descrição opcional"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Método de Pagamento</label> <select
+              id="quickPayment"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+              <option value="cash">Dinheiro</option>
+              <option value="debit">Débito</option>
+              <option value="credit">Crédito</option>
+              <option value="pix">PIX</option>
+              <option value="transfer">Transferência</option>
+            </select>
+          </div><button type="submit"
+            class="w-full bg-emerald-800 text-white py-3 rounded-lg font-medium hover:bg-emerald-900 transition-colors">
+            Adicionar Transação </button>
+        </form><!-- Alertas -->
+        <div id="alertsContainer" class="mt-6 space-y-3"></div>
+      </div>
+    </aside>
+  </div><!-- Bottom Navigation (Mobile) -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 bottom-nav z-20">
+    <div class="flex justify-around items-center h-16">
+
+      <!-- Home -->
+      <button onclick="navigateTo('dashboard')"
+        class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-emerald-800">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+          </path>
+        </svg>
+        <span class="text-xs mt-1">Home</span>
+      </button>
+
+      <!-- Entradas -->
+      <button onclick="navigateTo('income')"
+        class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+          </path>
+        </svg>
+        <span class="text-xs mt-1">Entradas</span>
+      </button>
+
+      <!-- Despesas -->
+      <button onclick="navigateTo('expenses')"
+        class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+        </svg>
+        <span class="text-xs mt-1">Despesas</span>
+      </button>
+
+      <!-- Investir -->
+      <button onclick="navigateTo('investments')"
+        class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6">
+          </path>
+        </svg>
+        <span class="text-xs mt-1">Investir</span>
+      </button>
+
+      <!-- Metas -->
+      <button onclick="navigateTo('goals')"
+        class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="text-xs mt-1">Metas</span>
+      </button>
+
+      <!-- ⚙️ Configurações -->
+      <button onclick="navigateTo('settings')"
+        class="bottom-nav-item flex flex-col items-center justify-center flex-1 text-gray-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+          </path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+          </path>
+        </svg>
+        <span class="text-xs mt-1">Configurações</span>
+      </button>
+
     </div>
-    <script>
-        // Configuração padrão
-        const defaultConfig = {
-            app_title: 'FinanceFlow',
-            user_name: 'Victor',
-            currency_symbol: 'R$',
-            primary_color: '#064e3b',
-            secondary_color: '#10b981',
-            text_color: '#1f2937',
-            background_color: '#f9fafb',
-            card_color: '#ffffff'
-        };
+  </nav>
+  <!-- Modal de Transação -->
+  <div id="transactionModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-full p-4">
+      <div class="modal-backdrop fixed inset-0" onclick="closeModal()"></div>
+      <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full p-6 animate-slide-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-800" id="modalTitle">Nova Transação</h3><button onclick="closeModal()"
+            class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+        <form id="transactionForm" class="space-y-4"><input type="hidden" id="editId">
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label> <select id="modalType"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+              <option value="income">Entrada</option>
+              <option value="expense">Despesa</option>
+              <option value="investment">Investimento</option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Categoria</label> <select id="modalCategory"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+              <option value="salary">Salário</option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Valor</label> <input type="number"
+              id="modalAmount" step="0.01" placeholder="0.00" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label> <input type="text"
+              id="modalDescription" placeholder="Descrição opcional"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Método de Pagamento</label> <select
+              id="modalPayment"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+              <option value="cash">Dinheiro</option>
+              <option value="debit">Débito</option>
+              <option value="credit">Crédito</option>
+              <option value="pix">PIX</option>
+              <option value="transfer">Transferência</option>
+            </select>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-2">Data</label> <input type="date"
+              id="modalDate" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+          </div>
+          <div class="flex space-x-3 pt-4"><button type="button" onclick="closeModal()"
+              class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+              Cancelar </button> <button type="submit" id="modalSubmitBtn"
+              class="flex-1 px-4 py-2 bg-emerald-800 text-white rounded-lg hover:bg-emerald-900 transition-colors">
+              Salvar </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div><!-- Confirmação de Exclusão -->
+  <div id="confirmModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-full p-4">
+      <div class="modal-backdrop fixed inset-0" onclick="closeConfirmModal()"></div>
+      <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full p-6 animate-slide-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-800">Confirmar Ação</h3><button onclick="closeConfirmModal()"
+            class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+        <p id="confirmMessage" class="text-gray-600 mb-6">Tem certeza que deseja continuar?</p>
+        <div class="flex space-x-3"><button onclick="closeConfirmModal()"
+            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+            Cancelar </button> <button id="confirmBtn"
+            class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            Confirmar </button>
+        </div>
+      </div>
+    </div>
+  </div><!-- Toast de Notificação -->
+  <div id="toast" class="hidden fixed top-4 right-4 z-50 bg-white rounded-lg shadow-lg p-4 max-w-sm animate-slide-in">
+    <div class="flex items-start space-x-3">
+      <div id="toastIcon" class="flex-shrink-0"></div>
+      <div class="flex-1">
+        <p id="toastMessage" class="text-sm font-medium text-gray-800"></p>
+      </div><button onclick="hideToast()" class="flex-shrink-0 text-gray-400 hover:text-gray-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+          </path>
+        </svg></button>
+    </div>
+  </div>
+  <script>
+    // Configuração padrão
+    const defaultConfig = {
+      app_title: 'FinanceFlow',
+      user_name: 'Victor',
+      currency_symbol: 'R$',
+      primary_color: '#064e3b',
+      secondary_color: '#10b981',
+      text_color: '#1f2937',
+      background_color: '#f9fafb',
+      card_color: '#ffffff'
+    };
 
-        // Estado global da aplicação
-        let appState = {
-            currentPage: 'dashboard',
-            transactions: [],
-            settings: {
-                currency: 'R$',
-                fixedSalary: 0,
-                investmentGoal: 30,
-                savingsGoal: 20,
-                leisureLimit: 20
-            },
-            salaryCounter: {
-                isPlaying: false,
-                currentValue: 0,
-                targetValue: 0,
-                interval: null
-            },
-            confirmCallback: null
-        };
+    // Estado global da aplicação
+    let appState = {
+      currentPage: 'dashboard',
+      transactions: [],
+      settings: {
+        currency: 'R$',
+        fixedSalary: 0,
+        investmentGoal: 30,
+        savingsGoal: 20,
+        leisureLimit: 20
+      },
+      salaryCounter: {
+        isPlaying: false,
+        currentValue: 0,
+        targetValue: 0,
+        interval: null
+      },
+      confirmCallback: null
+    };
 
-        // Categorias por tipo
-        const categories = {
-            income: [
-                { value: 'salary', label: 'Salário' },
-                { value: 'freelance', label: 'Freelance' },
-                { value: 'bonus', label: 'Bônus' },
-                { value: 'investment_return', label: 'Retorno de Investimento' },
-                { value: 'other_income', label: 'Outros' }
-            ],
-            expense: [
-                { value: 'housing', label: 'Moradia' },
-                { value: 'food', label: 'Alimentação' },
-                { value: 'transport', label: 'Transporte' },
-                { value: 'health', label: 'Saúde' },
-                { value: 'education', label: 'Educação' },
-                { value: 'leisure', label: 'Lazer' },
-                { value: 'shopping', label: 'Compras' },
-                { value: 'bills', label: 'Contas' },
-                { value: 'other_expense', label: 'Outros' }
-            ],
-            investment: [
-                { value: 'savings', label: 'Poupança' },
-                { value: 'stocks', label: 'Ações' },
-                { value: 'cdb', label: 'CDB' },
-                { value: 'real_estate', label: 'Imóveis' },
-                { value: 'crypto', label: 'Criptomoedas' },
-                { value: 'other_investment', label: 'Outros' }
-            ]
-        };
+    // Categorias por tipo
+    const categories = {
+      income: [
+        { value: 'salary', label: 'Salário' },
+        { value: 'freelance', label: 'Freelance' },
+        { value: 'bonus', label: 'Bônus' },
+        { value: 'investment_return', label: 'Retorno de Investimento' },
+        { value: 'other_income', label: 'Outros' }
+      ],
+      expense: [
+        { value: 'housing', label: 'Moradia' },
+        { value: 'food', label: 'Alimentação' },
+        { value: 'transport', label: 'Transporte' },
+        { value: 'health', label: 'Saúde' },
+        { value: 'education', label: 'Educação' },
+        { value: 'leisure', label: 'Lazer' },
+        { value: 'shopping', label: 'Compras' },
+        { value: 'bills', label: 'Contas' },
+        { value: 'other_expense', label: 'Outros' }
+      ],
+      investment: [
+        { value: 'savings', label: 'Poupança' },
+        { value: 'stocks', label: 'Ações' },
+        { value: 'cdb', label: 'CDB' },
+        { value: 'real_estate', label: 'Imóveis' },
+        { value: 'crypto', label: 'Criptomoedas' },
+        { value: 'other_investment', label: 'Outros' }
+      ]
+    };
 
-        // Categorias essenciais vs lazer
-        const essentialCategories = ['housing', 'food', 'transport', 'health', 'education', 'bills'];
-        const leisureCategories = ['leisure', 'shopping'];
+    // Categorias essenciais vs lazer
+    const essentialCategories = ['housing', 'food', 'transport', 'health', 'education', 'bills'];
+    const leisureCategories = ['leisure', 'shopping'];
 
-        // Funções de localStorage
-        function saveTransactions() {
-            localStorage.setItem('financeflow_transactions', JSON.stringify(appState.transactions));
-        }
+    // Funções de localStorage
+    function saveTransactions() {
+      localStorage.setItem('financeflow_transactions', JSON.stringify(appState.transactions));
+    }
 
-        function loadTransactions() {
-            const saved = localStorage.getItem('financeflow_transactions');
-            if (saved) {
-                appState.transactions = JSON.parse(saved);
-            }
-        }
+    function loadTransactions() {
+      const saved = localStorage.getItem('financeflow_transactions');
+      if (saved) {
+        appState.transactions = JSON.parse(saved);
+      }
+    }
 
-        function saveSettings() {
-            localStorage.setItem('financeflow_settings', JSON.stringify(appState.settings));
-        }
+    function saveSettings() {
+      localStorage.setItem('financeflow_settings', JSON.stringify(appState.settings));
+    }
 
-        function loadSettings() {
-            const saved = localStorage.getItem('financeflow_settings');
-            if (saved) {
-                appState.settings = { ...appState.settings, ...JSON.parse(saved) };
-            }
-        }
+    function loadSettings() {
+      const saved = localStorage.getItem('financeflow_settings');
+      if (saved) {
+        appState.settings = { ...appState.settings, ...JSON.parse(saved) };
+      }
+    }
 
-        // Gerar ID único
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
+    // Gerar ID único
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
 
-        // Inicialização
-        async function init() {
-            const today = new Date();
-            const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            const currentMonthText = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+    // Inicialização
+    async function init() {
+      const today = new Date();
+      const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+      const currentMonthText = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
 
-            document.getElementById('currentMonth').textContent = currentMonthText;
-            document.getElementById('currentMonthMobile').textContent = currentMonthText;
-            document.getElementById('modalDate').valueAsDate = today;
+      document.getElementById('currentMonth').textContent = currentMonthText;
+      document.getElementById('currentMonthMobile').textContent = currentMonthText;
+      document.getElementById('modalDate').valueAsDate = today;
 
-            // Carregar dados salvos
-            loadSettings();
-            loadTransactions();
+      // Carregar dados salvos
+      loadSettings();
+      loadTransactions();
 
-            // Inicializar Element SDK se disponível
-            if (window.elementSdk) {
-                await window.elementSdk.init({
-                    defaultConfig,
-                    onConfigChange: async (config) => {
-                        document.getElementById('userName').textContent = config.user_name || defaultConfig.user_name;
-                        document.getElementById('userNameMobile').textContent = config.user_name || defaultConfig.user_name;
+      // Inicializar Element SDK se disponível
+      if (window.elementSdk) {
+        await window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (config) => {
+            document.getElementById('userName').textContent = config.user_name || defaultConfig.user_name;
+            document.getElementById('userNameMobile').textContent = config.user_name || defaultConfig.user_name;
 
-                        const initial = (config.user_name || defaultConfig.user_name).charAt(0).toUpperCase();
-                        document.getElementById('userAvatar').textContent = initial;
-                        document.getElementById('userAvatarMobile').textContent = initial;
+            const initial = (config.user_name || defaultConfig.user_name).charAt(0).toUpperCase();
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('userAvatarMobile').textContent = initial;
 
-                        appState.settings.currency = config.currency_symbol || defaultConfig.currency_symbol;
+            appState.settings.currency = config.currency_symbol || defaultConfig.currency_symbol;
 
-                        const primaryColor = config.primary_color || defaultConfig.primary_color;
-                        const backgroundColor = config.background_color || defaultConfig.background_color;
-                        const cardColor = config.card_color || defaultConfig.card_color;
-                        const textColor = config.text_color || defaultConfig.text_color;
+            const primaryColor = config.primary_color || defaultConfig.primary_color;
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const cardColor = config.card_color || defaultConfig.card_color;
+            const textColor = config.text_color || defaultConfig.text_color;
 
-                        document.body.style.backgroundColor = backgroundColor;
+            document.body.style.backgroundColor = backgroundColor;
 
-                        const avatars = document.querySelectorAll('#userAvatar, #userAvatarMobile');
-                        avatars.forEach(avatar => {
-                            avatar.style.backgroundColor = primaryColor;
-                        });
-
-                        const cards = document.querySelectorAll('.bg-white');
-                        cards.forEach(card => {
-                            card.style.backgroundColor = cardColor;
-                        });
-
-                        const buttons = document.querySelectorAll('.bg-emerald-800, .text-emerald-800');
-                        buttons.forEach(btn => {
-                            if (btn.classList.contains('bg-emerald-800')) {
-                                btn.style.backgroundColor = primaryColor;
-                            }
-                            if (btn.classList.contains('text-emerald-800')) {
-                                btn.style.color = primaryColor;
-                            }
-                        });
-
-                        const textElements = document.querySelectorAll('.text-gray-800');
-                        textElements.forEach(el => {
-                            el.style.color = textColor;
-                        });
-
-                        renderCurrentPage();
-                    },
-                    mapToCapabilities: (config) => ({
-                        recolorables: [
-                            {
-                                get: () => config.background_color || defaultConfig.background_color,
-                                set: (value) => {
-                                    if (window.elementSdk) {
-                                        window.elementSdk.config.background_color = value;
-                                        window.elementSdk.setConfig({ background_color: value });
-                                    }
-                                }
-                            },
-                            {
-                                get: () => config.card_color || defaultConfig.card_color,
-                                set: (value) => {
-                                    if (window.elementSdk) {
-                                        window.elementSdk.config.card_color = value;
-                                        window.elementSdk.setConfig({ card_color: value });
-                                    }
-                                }
-                            },
-                            {
-                                get: () => config.text_color || defaultConfig.text_color,
-                                set: (value) => {
-                                    if (window.elementSdk) {
-                                        window.elementSdk.config.text_color = value;
-                                        window.elementSdk.setConfig({ text_color: value });
-                                    }
-                                }
-                            },
-                            {
-                                get: () => config.primary_color || defaultConfig.primary_color,
-                                set: (value) => {
-                                    if (window.elementSdk) {
-                                        window.elementSdk.config.primary_color = value;
-                                        window.elementSdk.setConfig({ primary_color: value });
-                                    }
-                                }
-                            }
-                        ],
-                        borderables: [],
-                        fontEditable: undefined,
-                        fontSizeable: undefined
-                    }),
-                    mapToEditPanelValues: (config) => new Map([
-                        ['app_title', config.app_title || defaultConfig.app_title],
-                        ['user_name', config.user_name || defaultConfig.user_name],
-                        ['currency_symbol', config.currency_symbol || defaultConfig.currency_symbol]
-                    ])
-                });
-            }
-
-            // Event listeners
-            setupEventListeners();
-
-            // Renderizar página inicial
-            navigateTo('dashboard');
-            updateAlerts();
-        }
-
-        // Configurar event listeners
-        function setupEventListeners() {
-            // Formulário de adição rápida
-            document.getElementById('quickAddForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await handleQuickAdd();
+            const avatars = document.querySelectorAll('#userAvatar, #userAvatarMobile');
+            avatars.forEach(avatar => {
+              avatar.style.backgroundColor = primaryColor;
             });
 
-            // Formulário de transação modal
-            document.getElementById('transactionForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await handleTransactionSubmit();
+            const cards = document.querySelectorAll('.bg-white');
+            cards.forEach(card => {
+              card.style.backgroundColor = cardColor;
             });
 
-            // Mudança de tipo atualiza categorias
-            document.getElementById('quickType').addEventListener('change', (e) => {
-                updateCategoryOptions('quick', e.target.value);
+            const buttons = document.querySelectorAll('.bg-emerald-800, .text-emerald-800');
+            buttons.forEach(btn => {
+              if (btn.classList.contains('bg-emerald-800')) {
+                btn.style.backgroundColor = primaryColor;
+              }
+              if (btn.classList.contains('text-emerald-800')) {
+                btn.style.color = primaryColor;
+              }
             });
 
-            document.getElementById('modalType').addEventListener('change', (e) => {
-                updateCategoryOptions('modal', e.target.value);
+            const textElements = document.querySelectorAll('.text-gray-800');
+            textElements.forEach(el => {
+              el.style.color = textColor;
             });
-
-            // Formulário de metas
-            document.addEventListener('submit', async (e) => {
-                if (e.target.id === 'goalsForm') {
-                    e.preventDefault();
-
-                    appState.settings.investmentGoal = parseInt(document.getElementById('investmentGoal').value);
-                    appState.settings.savingsGoal = parseInt(document.getElementById('savingsGoal').value);
-                    appState.settings.leisureLimit = parseInt(document.getElementById('leisureLimit').value);
-
-                    saveSettings();
-                    showToast('Metas atualizadas com sucesso!', 'success');
-                    updateAlerts();
-                }
-            });
-
-            // Formulário de configurações
-            document.addEventListener('submit', async (e) => {
-                if (e.target.id === 'settingsForm') {
-                    e.preventDefault();
-
-                    appState.settings.currency = document.getElementById('currencySymbol').value;
-                    appState.settings.fixedSalary = parseFloat(document.getElementById('fixedSalary').value) || 0;
-
-                    saveSettings();
-
-                    if (window.elementSdk) {
-                        await window.elementSdk.setConfig({
-                            currency_symbol: appState.settings.currency
-                        });
-                    }
-
-                    showToast('Configurações salvas com sucesso!', 'success');
-                    renderCurrentPage();
-                }
-            });
-        }
-
-        // Atualizar opções de categoria
-        function updateCategoryOptions(prefix, type) {
-            const select = document.getElementById(`${prefix}Category`);
-            select.innerHTML = '';
-
-            categories[type].forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat.value;
-                option.textContent = cat.label;
-                select.appendChild(option);
-            });
-        }
-
-        // Navegação entre páginas
-        function navigateTo(page) {
-            appState.currentPage = page;
-
-            // Atualizar navegação desktop
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('bg-emerald-50', 'text-emerald-800');
-                item.classList.add('text-gray-600', 'hover:bg-gray-50');
-            });
-
-            const activeNav = document.querySelector(`.nav-item[onclick="navigateTo('${page}')"]`);
-            if (activeNav) {
-                activeNav.classList.add('bg-emerald-50', 'text-emerald-800');
-                activeNav.classList.remove('text-gray-600', 'hover:bg-gray-50');
-            }
-
-            // Atualizar navegação mobile
-            document.querySelectorAll('.bottom-nav-item').forEach(item => {
-                item.classList.remove('text-emerald-800');
-                item.classList.add('text-gray-400');
-            });
-
-            const activeBottomNav = document.querySelector(`.bottom-nav-item[onclick="navigateTo('${page}')"]`);
-            if (activeBottomNav) {
-                activeBottomNav.classList.add('text-emerald-800');
-                activeBottomNav.classList.remove('text-gray-400');
-            }
 
             renderCurrentPage();
+          },
+          mapToCapabilities: (config) => ({
+            recolorables: [
+              {
+                get: () => config.background_color || defaultConfig.background_color,
+                set: (value) => {
+                  if (window.elementSdk) {
+                    window.elementSdk.config.background_color = value;
+                    window.elementSdk.setConfig({ background_color: value });
+                  }
+                }
+              },
+              {
+                get: () => config.card_color || defaultConfig.card_color,
+                set: (value) => {
+                  if (window.elementSdk) {
+                    window.elementSdk.config.card_color = value;
+                    window.elementSdk.setConfig({ card_color: value });
+                  }
+                }
+              },
+              {
+                get: () => config.text_color || defaultConfig.text_color,
+                set: (value) => {
+                  if (window.elementSdk) {
+                    window.elementSdk.config.text_color = value;
+                    window.elementSdk.setConfig({ text_color: value });
+                  }
+                }
+              },
+              {
+                get: () => config.primary_color || defaultConfig.primary_color,
+                set: (value) => {
+                  if (window.elementSdk) {
+                    window.elementSdk.config.primary_color = value;
+                    window.elementSdk.setConfig({ primary_color: value });
+                  }
+                }
+              }
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (config) => new Map([
+            ['app_title', config.app_title || defaultConfig.app_title],
+            ['user_name', config.user_name || defaultConfig.user_name],
+            ['currency_symbol', config.currency_symbol || defaultConfig.currency_symbol]
+          ])
+        });
+      }
+
+      // Event listeners
+      setupEventListeners();
+
+      // Renderizar página inicial
+      navigateTo('dashboard');
+      updateAlerts();
+    }
+
+    // Configurar event listeners
+    function setupEventListeners() {
+      // Formulário de adição rápida
+      document.getElementById('quickAddForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await handleQuickAdd();
+      });
+
+      // Formulário de transação modal
+      document.getElementById('transactionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await handleTransactionSubmit();
+      });
+
+      // Mudança de tipo atualiza categorias
+      document.getElementById('quickType').addEventListener('change', (e) => {
+        updateCategoryOptions('quick', e.target.value);
+      });
+
+      document.getElementById('modalType').addEventListener('change', (e) => {
+        updateCategoryOptions('modal', e.target.value);
+      });
+
+      // Formulário de metas
+      document.addEventListener('submit', async (e) => {
+        if (e.target.id === 'goalsForm') {
+          e.preventDefault();
+
+          appState.settings.investmentGoal = parseInt(document.getElementById('investmentGoal').value);
+          appState.settings.savingsGoal = parseInt(document.getElementById('savingsGoal').value);
+          appState.settings.leisureLimit = parseInt(document.getElementById('leisureLimit').value);
+
+          saveSettings();
+          showToast('Metas atualizadas com sucesso!', 'success');
+          updateAlerts();
         }
+      });
 
-        // Renderizar página atual
-        function renderCurrentPage() {
-            const content = document.getElementById('pageContent');
+      // Formulário de configurações
+      document.addEventListener('submit', async (e) => {
+        if (e.target.id === 'settingsForm') {
+          e.preventDefault();
 
-            switch (appState.currentPage) {
-                case 'dashboard':
-                    content.innerHTML = renderDashboard();
-                    break;
-                case 'income':
-                    content.innerHTML = renderIncome();
-                    break;
-                case 'expenses':
-                    content.innerHTML = renderExpenses();
-                    break;
-                case 'investments':
-                    content.innerHTML = renderInvestments();
-                    break;
-                case 'goals':
-                    content.innerHTML = renderGoals();
-                    break;
-                case 'settings':
-                    content.innerHTML = renderSettings();
-                    break;
-            }
-        }
+          appState.settings.currency = document.getElementById('currencySymbol').value;
+          appState.settings.fixedSalary = parseFloat(document.getElementById('fixedSalary').value) || 0;
 
-        // Calcular estatísticas
-        function calculateStats() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
+          saveSettings();
 
-            const currentMonthTransactions = appState.transactions.filter(t => {
-                const date = new Date(t.date);
-                return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+          if (window.elementSdk) {
+            await window.elementSdk.setConfig({
+              currency_symbol: appState.settings.currency
             });
+          }
 
-            const totalIncome = currentMonthTransactions
-                .filter(t => t.type === 'income')
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const totalExpenses = currentMonthTransactions
-                .filter(t => t.type === 'expense')
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const totalInvestments = currentMonthTransactions
-                .filter(t => t.type === 'investment')
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const leisureExpenses = currentMonthTransactions
-                .filter(t => t.type === 'expense' && leisureCategories.includes(t.category))
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const essentialExpenses = currentMonthTransactions
-                .filter(t => t.type === 'expense' && essentialCategories.includes(t.category))
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const balance = totalIncome - totalExpenses - totalInvestments;
-
-            return {
-                totalIncome,
-                totalExpenses,
-                totalInvestments,
-                leisureExpenses,
-                essentialExpenses,
-                balance,
-                investmentPercentage: totalIncome > 0 ? (totalInvestments / totalIncome) * 100 : 0,
-                savingsPercentage: totalIncome > 0 ? (balance / totalIncome) * 100 : 0,
-                leisurePercentage: totalIncome > 0 ? (leisureExpenses / totalIncome) * 100 : 0
-            };
+          showToast('Configurações salvas com sucesso!', 'success');
+          renderCurrentPage();
         }
+      });
+    }
 
-        // Renderizar Dashboard
-        function renderDashboard() {
-            const stats = calculateStats();
-            const { currency } = appState.settings;
+    // Atualizar opções de categoria
+    function updateCategoryOptions(prefix, type) {
+      const select = document.getElementById(`${prefix}Category`);
+      select.innerHTML = '';
 
-            return `
+      categories[type].forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.value;
+        option.textContent = cat.label;
+        select.appendChild(option);
+      });
+    }
+
+    // Navegação entre páginas
+    function navigateTo(page) {
+      appState.currentPage = page;
+
+      // Atualizar navegação desktop
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('bg-emerald-50', 'text-emerald-800');
+        item.classList.add('text-gray-600', 'hover:bg-gray-50');
+      });
+
+      const activeNav = document.querySelector(`.nav-item[onclick="navigateTo('${page}')"]`);
+      if (activeNav) {
+        activeNav.classList.add('bg-emerald-50', 'text-emerald-800');
+        activeNav.classList.remove('text-gray-600', 'hover:bg-gray-50');
+      }
+
+      // Atualizar navegação mobile
+      document.querySelectorAll('.bottom-nav-item').forEach(item => {
+        item.classList.remove('text-emerald-800');
+        item.classList.add('text-gray-400');
+      });
+
+      const activeBottomNav = document.querySelector(`.bottom-nav-item[onclick="navigateTo('${page}')"]`);
+      if (activeBottomNav) {
+        activeBottomNav.classList.add('text-emerald-800');
+        activeBottomNav.classList.remove('text-gray-400');
+      }
+
+      renderCurrentPage();
+    }
+
+    // Renderizar página atual
+    function renderCurrentPage() {
+      const content = document.getElementById('pageContent');
+
+      switch (appState.currentPage) {
+        case 'dashboard':
+          content.innerHTML = renderDashboard();
+          break;
+        case 'income':
+          content.innerHTML = renderIncome();
+          break;
+        case 'expenses':
+          content.innerHTML = renderExpenses();
+          break;
+        case 'investments':
+          content.innerHTML = renderInvestments();
+          break;
+        case 'goals':
+          content.innerHTML = renderGoals();
+          break;
+        case 'settings':
+          content.innerHTML = renderSettings();
+          break;
+      }
+    }
+
+    // Calcular estatísticas
+    function calculateStats() {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      const currentMonthTransactions = appState.transactions.filter(t => {
+        const date = new Date(t.date);
+        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+      });
+
+      const totalIncome = currentMonthTransactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + t.amount, 0);
+
+      const totalExpenses = currentMonthTransactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + t.amount, 0);
+
+      const totalInvestments = currentMonthTransactions
+        .filter(t => t.type === 'investment')
+        .reduce((sum, t) => sum + t.amount, 0);
+
+      const leisureExpenses = currentMonthTransactions
+        .filter(t => t.type === 'expense' && leisureCategories.includes(t.category))
+        .reduce((sum, t) => sum + t.amount, 0);
+
+      const essentialExpenses = currentMonthTransactions
+        .filter(t => t.type === 'expense' && essentialCategories.includes(t.category))
+        .reduce((sum, t) => sum + t.amount, 0);
+
+      const balance = totalIncome - totalExpenses - totalInvestments;
+
+      return {
+        totalIncome,
+        totalExpenses,
+        totalInvestments,
+        leisureExpenses,
+        essentialExpenses,
+        balance,
+        investmentPercentage: totalIncome > 0 ? (totalInvestments / totalIncome) * 100 : 0,
+        savingsPercentage: totalIncome > 0 ? (balance / totalIncome) * 100 : 0,
+        leisurePercentage: totalIncome > 0 ? (leisureExpenses / totalIncome) * 100 : 0
+      };
+    }
+
+    // Renderizar Dashboard
+    function renderDashboard() {
+      const stats = calculateStats();
+      const { currency } = appState.settings;
+
+      return `
         <div class="space-y-6">
           <div class="flex items-center justify-between">
             <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Dashboard Financeiro</h1>
@@ -850,11 +885,11 @@
                     <div class="mt-2 text-center">
                       <p class="text-sm font-medium ${stats.leisurePercentage > appState.settings.leisureLimit ? 'text-red-200' : 'text-white'}">
                         ${stats.leisurePercentage > appState.settings.leisureLimit ?
-                    `⚠️ Limite ultrapassado em ${currency} ${(stats.leisureExpenses - (stats.totalIncome * appState.settings.leisureLimit / 100)).toFixed(2)}!` :
-                    stats.leisurePercentage >= appState.settings.leisureLimit * 0.8 ?
-                        ' Atenção! Próximo do limite' :
-                        ' Dentro do limite'
-                }
+          `⚠️ Limite ultrapassado em ${currency} ${(stats.leisureExpenses - (stats.totalIncome * appState.settings.leisureLimit / 100)).toFixed(2)}!` :
+          stats.leisurePercentage >= appState.settings.leisureLimit * 0.8 ?
+            ' Atenção! Próximo do limite' :
+            ' Dentro do limite'
+        }
                       </p>
                     </div>
                   </div>
@@ -940,9 +975,9 @@
                   <div class="w-12 h-12 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       ${stats.balance >= 0 ?
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>' :
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
-                }
+          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>' :
+          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
+        }
                     </svg>
                   </div>
                 </div>
@@ -960,92 +995,98 @@
               </div>
             </div>
 
-       
-          </div>
+            <!-- Evolução dos Últimos 6 Meses -->
+            <div class="bg-white rounded-3xl p-10 shadow-lg border-0 card-hover">
+              <h3 class="text-2xl font-bold text-emerald-800 mb-8 text-center">Evolução dos Últimos 6 Meses</h3>
+              <div class="h-80">
+                ${renderMonthlyChart()}
+              </div>
+            </div>
+          </div></div>
         </div>
       `;
-        }
+    }
 
-        // Renderizar gráfico semanal
-        function renderWeeklyChart() {
-            const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            const weeklyData = new Array(7).fill(0);
+    // Renderizar gráfico semanal
+    function renderWeeklyChart() {
+      const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      const weeklyData = new Array(7).fill(0);
 
-            appState.transactions
-                .filter(t => t.type === 'expense')
-                .forEach(t => {
-                    const day = new Date(t.date).getDay();
-                    weeklyData[day] += t.amount;
-                });
+      appState.transactions
+        .filter(t => t.type === 'expense')
+        .forEach(t => {
+          const day = new Date(t.date).getDay();
+          weeklyData[day] += t.amount;
+        });
 
-            const maxValue = Math.max(...weeklyData, 1);
+      const maxValue = Math.max(...weeklyData, 1);
 
-            return `
+      return `
         <div class="flex items-end justify-between h-full space-x-2">
           ${weeklyData.map((value, index) => {
-                const height = (value / maxValue) * 80;
-                return `
+        const height = (value / maxValue) * 80;
+        return `
               <div class="flex flex-col items-center flex-1">
                 <div class="bg-emerald-600 rounded-t chart-bar" style="height: ${height}%; min-height: 4px; width: 100%;"></div>
                 <span class="text-xs text-gray-600 mt-2">${days[index]}</span>
                 <span class="text-xs text-gray-500">${appState.settings.currency} ${value.toFixed(0)}</span>
               </div>
             `;
-            }).join('')}
+      }).join('')}
         </div>
       `;
+    }
+
+    // Renderizar gráfico mensal - sempre atualiza com os últimos 6 meses
+    function renderMonthlyChart() {
+      const months = [];
+      const now = new Date();
+
+      // Sempre pega os últimos 6 meses baseado na data atual
+      for (let i = 5; i >= 0; i--) {
+        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        months.push({
+          name: date.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' }),
+          fullDate: date,
+          income: 0,
+          expenses: 0,
+          investments: 0
+        });
+      }
+
+      // Processa todas as transações e agrupa por mês/ano
+      appState.transactions.forEach(t => {
+        const transactionDate = new Date(t.date);
+
+        // Encontra o mês correspondente nos últimos 6 meses
+        const monthIndex = months.findIndex(m => {
+          return transactionDate.getMonth() === m.fullDate.getMonth() &&
+            transactionDate.getFullYear() === m.fullDate.getFullYear();
+        });
+
+        if (monthIndex >= 0) {
+          if (t.type === 'income') {
+            months[monthIndex].income += t.amount;
+          } else if (t.type === 'expense') {
+            months[monthIndex].expenses += t.amount;
+          } else if (t.type === 'investment') {
+            months[monthIndex].investments += t.amount;
+          }
         }
+      });
 
-        // Renderizar gráfico mensal - sempre atualiza com os últimos 6 meses
-        function renderMonthlyChart() {
-            const months = [];
-            const now = new Date();
+      const maxValue = Math.max(...months.map(m => Math.max(m.income, m.expenses + m.investments)), 100);
 
-            // Sempre pega os últimos 6 meses baseado na data atual
-            for (let i = 5; i >= 0; i--) {
-                const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-                months.push({
-                    name: date.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' }),
-                    fullDate: date,
-                    income: 0,
-                    expenses: 0,
-                    investments: 0
-                });
-            }
-
-            // Processa todas as transações e agrupa por mês/ano
-            appState.transactions.forEach(t => {
-                const transactionDate = new Date(t.date);
-
-                // Encontra o mês correspondente nos últimos 6 meses
-                const monthIndex = months.findIndex(m => {
-                    return transactionDate.getMonth() === m.fullDate.getMonth() &&
-                        transactionDate.getFullYear() === m.fullDate.getFullYear();
-                });
-
-                if (monthIndex >= 0) {
-                    if (t.type === 'income') {
-                        months[monthIndex].income += t.amount;
-                    } else if (t.type === 'expense') {
-                        months[monthIndex].expenses += t.amount;
-                    } else if (t.type === 'investment') {
-                        months[monthIndex].investments += t.amount;
-                    }
-                }
-            });
-
-            const maxValue = Math.max(...months.map(m => Math.max(m.income, m.expenses + m.investments)), 100);
-
-            return `
+      return `
         <div class="h-full flex flex-col">
           <div class="flex items-end justify-between flex-1 space-x-6 px-4">
             ${months.map((month, index) => {
-                const incomeHeight = (month.income / maxValue) * 85;
-                const expenseHeight = (month.expenses / maxValue) * 85;
-                const investmentHeight = (month.investments / maxValue) * 85;
-                const totalHeight = ((month.expenses + month.investments) / maxValue) * 85;
+        const incomeHeight = (month.income / maxValue) * 85;
+        const expenseHeight = (month.expenses / maxValue) * 85;
+        const investmentHeight = (month.investments / maxValue) * 85;
+        const totalHeight = ((month.expenses + month.investments) / maxValue) * 85;
 
-                return `
+        return `
                 <div class="flex flex-col items-center flex-1 group">
                   <div class="relative flex items-end space-x-2 mb-4" style="height: 240px;">
                     <!-- Barra de Entradas -->
@@ -1073,14 +1114,14 @@
                     <span class="text-sm font-medium text-gray-700">${month.name}</span>
                     <div class="text-xs text-gray-500 mt-1">
                       ${month.income > 0 || month.expenses > 0 || month.investments > 0 ?
-                        `Saldo: ${appState.settings.currency} ${(month.income - month.expenses - month.investments).toFixed(0)}` :
-                        'Sem dados'
-                    }
+            `Saldo: ${appState.settings.currency} ${(month.income - month.expenses - month.investments).toFixed(0)}` :
+            'Sem dados'
+          }
                     </div>
                   </div>
                 </div>
               `;
-            }).join('')}
+      }).join('')}
           </div>
           
           <div class="flex justify-center space-x-6 mt-6 pt-4 border-t border-gray-100">
@@ -1095,25 +1136,25 @@
           </div>
         </div>
       `;
-        }
+    }
 
-        // Renderizar progresso de metas circular
-        function renderGoalProgressCircular(stats) {
-            const { investmentGoal, savingsGoal, leisureLimit } = appState.settings;
-            const investmentProgress = Math.min((stats.investmentPercentage / investmentGoal) * 100, 100);
-            const savingsProgress = Math.min((stats.savingsPercentage / savingsGoal) * 100, 100);
-            const leisureProgress = Math.min((stats.leisurePercentage / leisureLimit) * 100, 100);
+    // Renderizar progresso de metas circular
+    function renderGoalProgressCircular(stats) {
+      const { investmentGoal, savingsGoal, leisureLimit } = appState.settings;
+      const investmentProgress = Math.min((stats.investmentPercentage / investmentGoal) * 100, 100);
+      const savingsProgress = Math.min((stats.savingsPercentage / savingsGoal) * 100, 100);
+      const leisureProgress = Math.min((stats.leisurePercentage / leisureLimit) * 100, 100);
 
-            // Função para criar SVG de progresso circular
-            function createCircularProgress(percentage, color, shadowColor) {
-                const radius = 35;
-                const strokeWidth = 8;
-                const normalizedRadius = radius - strokeWidth * 2;
-                const circumference = normalizedRadius * 2 * Math.PI;
-                const strokeDasharray = `${circumference} ${circumference}`;
-                const strokeDashoffset = circumference - (percentage / 100) * circumference;
+      // Função para criar SVG de progresso circular
+      function createCircularProgress(percentage, color, shadowColor) {
+        const radius = 35;
+        const strokeWidth = 8;
+        const normalizedRadius = radius - strokeWidth * 2;
+        const circumference = normalizedRadius * 2 * Math.PI;
+        const strokeDasharray = `${circumference} ${circumference}`;
+        const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
-                return `
+        return `
           <svg width="90" height="90" viewBox="0 0 90 90" class="transform -rotate-90">
             <defs>
               <filter id="shadow-${color.replace('#', '')}" x="-50%" y="-50%" width="200%" height="200%">
@@ -1145,9 +1186,9 @@
             />
           </svg>
         `;
-            }
+      }
 
-            return `
+      return `
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
           <!-- Meta de Investimento -->
           <div class="flex flex-col items-center space-y-4">
@@ -1201,58 +1242,58 @@
           </div>
         </div>
       `;
+    }
+
+    // Renderizar gráfico donut
+    function renderDonutChart(stats) {
+      const total = stats.totalIncome;
+      if (total === 0) {
+        return '<div class="text-center py-16"><p class="text-gray-500 text-lg">Sem dados para exibir</p></div>';
+      }
+
+      const essentialPercent = (stats.essentialExpenses / total) * 100;
+      const investmentPercent = (stats.totalInvestments / total) * 100;
+      const leisurePercent = (stats.leisureExpenses / total) * 100;
+      const remainingPercent = 100 - essentialPercent - investmentPercent - leisurePercent;
+
+      let currentAngle = 0;
+      const radius = 120;
+      const centerX = 150;
+      const centerY = 150;
+
+      function getArcPath(startAngle, endAngle) {
+        const start = polarToCartesian(centerX, centerY, radius, endAngle);
+        const end = polarToCartesian(centerX, centerY, radius, startAngle);
+        const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+        return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
+      }
+
+      function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+        return {
+          x: centerX + (radius * Math.cos(angleInRadians)),
+          y: centerY + (radius * Math.sin(angleInRadians))
+        };
+      }
+
+      const segments = [
+        { percent: essentialPercent, color: '#065f46', label: 'Essenciais', value: stats.essentialExpenses },
+        { percent: investmentPercent, color: '#047857', label: 'Investimentos', value: stats.totalInvestments },
+        { percent: leisurePercent, color: '#059669', label: 'Lazer', value: stats.leisureExpenses },
+        { percent: remainingPercent, color: '#10b981', label: 'Restante', value: stats.balance }
+      ];
+
+      let paths = '';
+      segments.forEach(seg => {
+        if (seg.percent > 0) {
+          const angle = (seg.percent / 100) * 360;
+          const path = getArcPath(currentAngle, currentAngle + angle);
+          paths += `<path d="${path}" stroke="${seg.color}" stroke-width="40" fill="none" stroke-linecap="round" />`;
+          currentAngle += angle;
         }
+      });
 
-        // Renderizar gráfico donut
-        function renderDonutChart(stats) {
-            const total = stats.totalIncome;
-            if (total === 0) {
-                return '<div class="text-center py-16"><p class="text-gray-500 text-lg">Sem dados para exibir</p></div>';
-            }
-
-            const essentialPercent = (stats.essentialExpenses / total) * 100;
-            const investmentPercent = (stats.totalInvestments / total) * 100;
-            const leisurePercent = (stats.leisureExpenses / total) * 100;
-            const remainingPercent = 100 - essentialPercent - investmentPercent - leisurePercent;
-
-            let currentAngle = 0;
-            const radius = 120;
-            const centerX = 150;
-            const centerY = 150;
-
-            function getArcPath(startAngle, endAngle) {
-                const start = polarToCartesian(centerX, centerY, radius, endAngle);
-                const end = polarToCartesian(centerX, centerY, radius, startAngle);
-                const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-                return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
-            }
-
-            function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-                const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-                return {
-                    x: centerX + (radius * Math.cos(angleInRadians)),
-                    y: centerY + (radius * Math.sin(angleInRadians))
-                };
-            }
-
-            const segments = [
-                { percent: essentialPercent, color: '#065f46', label: 'Essenciais', value: stats.essentialExpenses },
-                { percent: investmentPercent, color: '#047857', label: 'Investimentos', value: stats.totalInvestments },
-                { percent: leisurePercent, color: '#059669', label: 'Lazer', value: stats.leisureExpenses },
-                { percent: remainingPercent, color: '#10b981', label: 'Restante', value: stats.balance }
-            ];
-
-            let paths = '';
-            segments.forEach(seg => {
-                if (seg.percent > 0) {
-                    const angle = (seg.percent / 100) * 360;
-                    const path = getArcPath(currentAngle, currentAngle + angle);
-                    paths += `<path d="${path}" stroke="${seg.color}" stroke-width="40" fill="none" stroke-linecap="round" />`;
-                    currentAngle += angle;
-                }
-            });
-
-            return `
+      return `
         <div class="flex flex-col items-center space-y-8">
           <div class="relative">
             <svg width="300" height="300" viewBox="0 0 300 300" class="drop-shadow-lg">
@@ -1285,27 +1326,27 @@
           </div>
         </div>
       `;
-        }
+    }
 
-        // Renderizar página de entradas
-        function renderIncome() {
-            const incomes = appState.transactions.filter(t => t.type === 'income');
-            const total = incomes.reduce((sum, t) => sum + t.amount, 0);
-            const { currency } = appState.settings;
+    // Renderizar página de entradas
+    function renderIncome() {
+      const incomes = appState.transactions.filter(t => t.type === 'income');
+      const total = incomes.reduce((sum, t) => sum + t.amount, 0);
+      const { currency } = appState.settings;
 
-            // Calcular estatísticas das entradas
-            const thisMonth = incomes.filter(t => {
-                const date = new Date(t.date);
-                const now = new Date();
-                return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-            });
+      // Calcular estatísticas das entradas
+      const thisMonth = incomes.filter(t => {
+        const date = new Date(t.date);
+        const now = new Date();
+        return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+      });
 
-            const salaryIncome = thisMonth.filter(t => t.category === 'salary').reduce((sum, t) => sum + t.amount, 0);
-            const freelanceIncome = thisMonth.filter(t => t.category === 'freelance').reduce((sum, t) => sum + t.amount, 0);
-            const bonusIncome = thisMonth.filter(t => t.category === 'bonus').reduce((sum, t) => sum + t.amount, 0);
-            const otherIncome = thisMonth.filter(t => !['salary', 'freelance', 'bonus'].includes(t.category)).reduce((sum, t) => sum + t.amount, 0);
+      const salaryIncome = thisMonth.filter(t => t.category === 'salary').reduce((sum, t) => sum + t.amount, 0);
+      const freelanceIncome = thisMonth.filter(t => t.category === 'freelance').reduce((sum, t) => sum + t.amount, 0);
+      const bonusIncome = thisMonth.filter(t => t.category === 'bonus').reduce((sum, t) => sum + t.amount, 0);
+      const otherIncome = thisMonth.filter(t => !['salary', 'freelance', 'bonus'].includes(t.category)).reduce((sum, t) => sum + t.amount, 0);
 
-            return `
+      return `
         <div class="space-y-6">
           <div class="flex items-center justify-between">
             <div>
@@ -1444,29 +1485,29 @@
           </div>
         </div>
       `;
-        }
+    }
 
-        // Renderizar página de despesas
-        function renderExpenses() {
-            const expenses = appState.transactions.filter(t => t.type === 'expense');
-            const total = expenses.reduce((sum, t) => sum + t.amount, 0);
-            const { currency } = appState.settings;
+    // Renderizar página de despesas
+    function renderExpenses() {
+      const expenses = appState.transactions.filter(t => t.type === 'expense');
+      const total = expenses.reduce((sum, t) => sum + t.amount, 0);
+      const { currency } = appState.settings;
 
-            // Calcular estatísticas das despesas
-            const thisMonth = expenses.filter(t => {
-                const date = new Date(t.date);
-                const now = new Date();
-                return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-            });
+      // Calcular estatísticas das despesas
+      const thisMonth = expenses.filter(t => {
+        const date = new Date(t.date);
+        const now = new Date();
+        return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+      });
 
-            const essential = thisMonth.filter(t => essentialCategories.includes(t.category)).reduce((sum, t) => sum + t.amount, 0);
-            const leisure = thisMonth.filter(t => leisureCategories.includes(t.category)).reduce((sum, t) => sum + t.amount, 0);
-            const housing = thisMonth.filter(t => t.category === 'housing').reduce((sum, t) => sum + t.amount, 0);
-            const food = thisMonth.filter(t => t.category === 'food').reduce((sum, t) => sum + t.amount, 0);
-            const transport = thisMonth.filter(t => t.category === 'transport').reduce((sum, t) => sum + t.amount, 0);
-            const bills = thisMonth.filter(t => t.category === 'bills').reduce((sum, t) => sum + t.amount, 0);
+      const essential = thisMonth.filter(t => essentialCategories.includes(t.category)).reduce((sum, t) => sum + t.amount, 0);
+      const leisure = thisMonth.filter(t => leisureCategories.includes(t.category)).reduce((sum, t) => sum + t.amount, 0);
+      const housing = thisMonth.filter(t => t.category === 'housing').reduce((sum, t) => sum + t.amount, 0);
+      const food = thisMonth.filter(t => t.category === 'food').reduce((sum, t) => sum + t.amount, 0);
+      const transport = thisMonth.filter(t => t.category === 'transport').reduce((sum, t) => sum + t.amount, 0);
+      const bills = thisMonth.filter(t => t.category === 'bills').reduce((sum, t) => sum + t.amount, 0);
 
-            return `
+      return `
         <div class="space-y-6">
           <div class="flex items-center justify-between">
             <div>
@@ -1644,29 +1685,29 @@
           </div>
         </div>
       `;
-        }
+    }
 
-        // Renderizar página de investimentos
-        function renderInvestments() {
-            const investments = appState.transactions.filter(t => t.type === 'investment');
-            const total = investments.reduce((sum, t) => sum + t.amount, 0);
-            const { currency } = appState.settings;
+    // Renderizar página de investimentos
+    function renderInvestments() {
+      const investments = appState.transactions.filter(t => t.type === 'investment');
+      const total = investments.reduce((sum, t) => sum + t.amount, 0);
+      const { currency } = appState.settings;
 
-            // Calcular estatísticas dos investimentos
-            const thisMonth = investments.filter(t => {
-                const date = new Date(t.date);
-                const now = new Date();
-                return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-            });
+      // Calcular estatísticas dos investimentos
+      const thisMonth = investments.filter(t => {
+        const date = new Date(t.date);
+        const now = new Date();
+        return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+      });
 
-            const savings = thisMonth.filter(t => t.category === 'savings').reduce((sum, t) => sum + t.amount, 0);
-            const stocks = thisMonth.filter(t => t.category === 'stocks').reduce((sum, t) => sum + t.amount, 0);
-            const cdb = thisMonth.filter(t => t.category === 'cdb').reduce((sum, t) => sum + t.amount, 0);
-            const crypto = thisMonth.filter(t => t.category === 'crypto').reduce((sum, t) => sum + t.amount, 0);
-            const realEstate = thisMonth.filter(t => t.category === 'real_estate').reduce((sum, t) => sum + t.amount, 0);
-            const others = thisMonth.filter(t => t.category === 'other_investment').reduce((sum, t) => sum + t.amount, 0);
+      const savings = thisMonth.filter(t => t.category === 'savings').reduce((sum, t) => sum + t.amount, 0);
+      const stocks = thisMonth.filter(t => t.category === 'stocks').reduce((sum, t) => sum + t.amount, 0);
+      const cdb = thisMonth.filter(t => t.category === 'cdb').reduce((sum, t) => sum + t.amount, 0);
+      const crypto = thisMonth.filter(t => t.category === 'crypto').reduce((sum, t) => sum + t.amount, 0);
+      const realEstate = thisMonth.filter(t => t.category === 'real_estate').reduce((sum, t) => sum + t.amount, 0);
+      const others = thisMonth.filter(t => t.category === 'other_investment').reduce((sum, t) => sum + t.amount, 0);
 
-            return `
+      return `
         <div class="space-y-6">
           <div class="flex items-center justify-between">
             <div>
@@ -1843,14 +1884,14 @@
           </div>
         </div>
       `;
-        }
+    }
 
-        // Renderizar página de metas
-        function renderGoals() {
-            const { investmentGoal, savingsGoal, leisureLimit } = appState.settings;
-            const stats = calculateStats();
+    // Renderizar página de metas
+    function renderGoals() {
+      const { investmentGoal, savingsGoal, leisureLimit } = appState.settings;
+      const stats = calculateStats();
 
-            return `
+      return `
         <div class="space-y-6">
           <div>
             <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Metas Financeiras</h1>
@@ -1988,14 +2029,14 @@
           </div>
         </div>
       `;
-        }
+    }
 
-        // Renderizar página de configurações
-        function renderSettings() {
-            const { currency, fixedSalary } = appState.settings;
-            const stats = calculateStats();
+    // Renderizar página de configurações
+    function renderSettings() {
+      const { currency, fixedSalary } = appState.settings;
+      const stats = calculateStats();
 
-            return `
+      return `
         <div class="space-y-6">
           <div>
             <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Configurações</h1>
@@ -2109,283 +2150,283 @@
           </div>
         </div>
       `;
+    }
+
+    // Atualizar valor da meta em tempo real
+    function updateGoalValue(type, value) {
+      document.getElementById(`${type}Value`).textContent = `${value}%`;
+    }
+
+    // Confirmar limpeza de dados
+    function confirmClearData() {
+      showConfirmModal(
+        'Tem certeza que deseja excluir todos os dados? Esta ação não pode ser desfeita.',
+        clearAllData
+      );
+    }
+
+    // Limpar todos os dados
+    function clearAllData() {
+      appState.transactions = [];
+      appState.settings = {
+        currency: 'R$',
+        fixedSalary: 0,
+        investmentGoal: 30,
+        savingsGoal: 20,
+        leisureLimit: 20
+      };
+
+      localStorage.removeItem('financeflow_transactions');
+      localStorage.removeItem('financeflow_settings');
+
+      closeConfirmModal();
+      showToast('Todos os dados foram excluídos', 'success');
+      navigateTo('dashboard');
+    }
+
+    // Mostrar modal de confirmação
+    function showConfirmModal(message, callback) {
+      document.getElementById('confirmMessage').textContent = message;
+      appState.confirmCallback = callback;
+      document.getElementById('confirmModal').classList.remove('hidden');
+
+      document.getElementById('confirmBtn').onclick = () => {
+        if (appState.confirmCallback) {
+          appState.confirmCallback();
         }
+      };
+    }
 
-        // Atualizar valor da meta em tempo real
-        function updateGoalValue(type, value) {
-            document.getElementById(`${type}Value`).textContent = `${value}%`;
+    // Fechar modal de confirmação
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').classList.add('hidden');
+      appState.confirmCallback = null;
+    }
+
+    // Mostrar modal de transação
+    function showModal(type = null, transactionId = null) {
+      const modal = document.getElementById('transactionModal');
+      const form = document.getElementById('transactionForm');
+      const title = document.getElementById('modalTitle');
+
+      form.reset();
+      document.getElementById('editId').value = '';
+
+      if (transactionId) {
+        const transaction = appState.transactions.find(t => t.id === transactionId);
+        if (transaction) {
+          title.textContent = 'Editar Transação';
+          document.getElementById('editId').value = transactionId;
+          document.getElementById('modalType').value = transaction.type;
+          updateCategoryOptions('modal', transaction.type);
+          document.getElementById('modalCategory').value = transaction.category;
+          document.getElementById('modalAmount').value = transaction.amount;
+          document.getElementById('modalDescription').value = transaction.description || '';
+          document.getElementById('modalPayment').value = transaction.paymentMethod;
+          document.getElementById('modalDate').value = transaction.date;
         }
-
-        // Confirmar limpeza de dados
-        function confirmClearData() {
-            showConfirmModal(
-                'Tem certeza que deseja excluir todos os dados? Esta ação não pode ser desfeita.',
-                clearAllData
-            );
+      } else {
+        title.textContent = 'Nova Transação';
+        if (type) {
+          document.getElementById('modalType').value = type;
+          updateCategoryOptions('modal', type);
+        } else {
+          updateCategoryOptions('modal', 'income');
         }
+        document.getElementById('modalDate').valueAsDate = new Date();
+      }
 
-        // Limpar todos os dados
-        function clearAllData() {
-            appState.transactions = [];
-            appState.settings = {
-                currency: 'R$',
-                fixedSalary: 0,
-                investmentGoal: 30,
-                savingsGoal: 20,
-                leisureLimit: 20
-            };
+      modal.classList.remove('hidden');
+    }
 
-            localStorage.removeItem('financeflow_transactions');
-            localStorage.removeItem('financeflow_settings');
+    // Fechar modal
+    function closeModal() {
+      document.getElementById('transactionModal').classList.add('hidden');
+    }
 
-            closeConfirmModal();
-            showToast('Todos os dados foram excluídos', 'success');
-            navigateTo('dashboard');
+    // Mostrar adição rápida (mobile)
+    function showQuickAdd() {
+      showModal();
+    }
+
+    // Submeter transação
+    async function handleTransactionSubmit() {
+      const editId = document.getElementById('editId').value;
+      const type = document.getElementById('modalType').value;
+      const category = document.getElementById('modalCategory').value;
+      const amount = parseFloat(document.getElementById('modalAmount').value);
+      const description = document.getElementById('modalDescription').value;
+      const paymentMethod = document.getElementById('modalPayment').value;
+      const date = document.getElementById('modalDate').value;
+
+      if (!amount || amount <= 0) {
+        showToast('Por favor, insira um valor válido', 'error');
+        return;
+      }
+
+      const submitBtn = document.getElementById('modalSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Salvando...';
+
+      const transactionData = {
+        type,
+        category,
+        amount,
+        description,
+        paymentMethod,
+        date,
+        createdAt: new Date().toISOString()
+      };
+
+      if (editId) {
+        const index = appState.transactions.findIndex(t => t.id === editId);
+        if (index >= 0) {
+          appState.transactions[index] = { ...appState.transactions[index], ...transactionData };
         }
+      } else {
+        transactionData.id = generateId();
+        appState.transactions.push(transactionData);
+      }
 
-        // Mostrar modal de confirmação
-        function showConfirmModal(message, callback) {
-            document.getElementById('confirmMessage').textContent = message;
-            appState.confirmCallback = callback;
-            document.getElementById('confirmModal').classList.remove('hidden');
+      saveTransactions();
 
-            document.getElementById('confirmBtn').onclick = () => {
-                if (appState.confirmCallback) {
-                    appState.confirmCallback();
-                }
-            };
-        }
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Salvar';
 
-        // Fechar modal de confirmação
-        function closeConfirmModal() {
-            document.getElementById('confirmModal').classList.add('hidden');
-            appState.confirmCallback = null;
-        }
+      closeModal();
 
-        // Mostrar modal de transação
-        function showModal(type = null, transactionId = null) {
-            const modal = document.getElementById('transactionModal');
-            const form = document.getElementById('transactionForm');
-            const title = document.getElementById('modalTitle');
+      // Mostrar notificação específica para gastos de lazer
+      if (type === 'expense' && leisureCategories.includes(category)) {
+        showLeisureSpendingNotification(amount);
+      } else {
+        showToast(editId ? 'Transação atualizada!' : 'Transação adicionada!', 'success');
+      }
 
-            form.reset();
-            document.getElementById('editId').value = '';
+      renderCurrentPage();
+      updateAlerts();
+    }
 
-            if (transactionId) {
-                const transaction = appState.transactions.find(t => t.id === transactionId);
-                if (transaction) {
-                    title.textContent = 'Editar Transação';
-                    document.getElementById('editId').value = transactionId;
-                    document.getElementById('modalType').value = transaction.type;
-                    updateCategoryOptions('modal', transaction.type);
-                    document.getElementById('modalCategory').value = transaction.category;
-                    document.getElementById('modalAmount').value = transaction.amount;
-                    document.getElementById('modalDescription').value = transaction.description || '';
-                    document.getElementById('modalPayment').value = transaction.paymentMethod;
-                    document.getElementById('modalDate').value = transaction.date;
-                }
-            } else {
-                title.textContent = 'Nova Transação';
-                if (type) {
-                    document.getElementById('modalType').value = type;
-                    updateCategoryOptions('modal', type);
-                } else {
-                    updateCategoryOptions('modal', 'income');
-                }
-                document.getElementById('modalDate').valueAsDate = new Date();
-            }
+    // Mostrar notificação específica para gastos de lazer
+    function showLeisureSpendingNotification(amount) {
+      const stats = calculateStats();
+      const { currency, leisureLimit } = appState.settings;
+      const totalLeisureLimit = stats.totalIncome * leisureLimit / 100;
+      const remainingLeisure = Math.max(0, totalLeisureLimit - stats.leisureExpenses);
+      const percentageUsed = (stats.leisureExpenses / totalLeisureLimit) * 100;
 
-            modal.classList.remove('hidden');
-        }
+      let message = '';
+      let type = 'info';
 
-        // Fechar modal
-        function closeModal() {
-            document.getElementById('transactionModal').classList.add('hidden');
-        }
+      if (stats.leisureExpenses > totalLeisureLimit) {
+        message = `🚨 Limite de lazer ultrapassado! Você gastou ${currency} ${amount.toFixed(2)} e já ultrapassou em ${currency} ${(stats.leisureExpenses - totalLeisureLimit).toFixed(2)}`;
+        type = 'error';
+      } else if (percentageUsed >= 90) {
+        message = `⚠️ Quase no limite! Você gastou ${currency} ${amount.toFixed(2)}. Restam apenas ${currency} ${remainingLeisure.toFixed(2)} para lazer este mês`;
+        type = 'warning';
+      } else if (percentageUsed >= 70) {
+        message = `💰 Gasto de lazer: ${currency} ${amount.toFixed(2)}. Você ainda pode gastar ${currency} ${remainingLeisure.toFixed(2)} com lazer`;
+        type = 'warning';
+      } else {
+        message = `✅ Gasto de lazer: ${currency} ${amount.toFixed(2)}. Você ainda pode gastar ${currency} ${remainingLeisure.toFixed(2)} com lazer este mês`;
+        type = 'success';
+      }
 
-        // Mostrar adição rápida (mobile)
-        function showQuickAdd() {
-            showModal();
-        }
+      showToast(message, type);
+    }
 
-        // Submeter transação
-        async function handleTransactionSubmit() {
-            const editId = document.getElementById('editId').value;
-            const type = document.getElementById('modalType').value;
-            const category = document.getElementById('modalCategory').value;
-            const amount = parseFloat(document.getElementById('modalAmount').value);
-            const description = document.getElementById('modalDescription').value;
-            const paymentMethod = document.getElementById('modalPayment').value;
-            const date = document.getElementById('modalDate').value;
+    // Adição rápida
+    async function handleQuickAdd() {
+      const type = document.getElementById('quickType').value;
+      const category = document.getElementById('quickCategory').value;
+      const amount = parseFloat(document.getElementById('quickAmount').value);
+      const description = document.getElementById('quickDescription').value;
+      const paymentMethod = document.getElementById('quickPayment').value;
 
-            if (!amount || amount <= 0) {
-                showToast('Por favor, insira um valor válido', 'error');
-                return;
-            }
+      if (!amount || amount <= 0) {
+        showToast('Por favor, insira um valor válido', 'error');
+        return;
+      }
 
-            const submitBtn = document.getElementById('modalSubmitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Salvando...';
+      const transactionData = {
+        id: generateId(),
+        type,
+        category,
+        amount,
+        description,
+        paymentMethod,
+        date: new Date().toISOString().split('T')[0],
+        createdAt: new Date().toISOString()
+      };
 
-            const transactionData = {
-                type,
-                category,
-                amount,
-                description,
-                paymentMethod,
-                date,
-                createdAt: new Date().toISOString()
-            };
+      appState.transactions.push(transactionData);
+      saveTransactions();
 
-            if (editId) {
-                const index = appState.transactions.findIndex(t => t.id === editId);
-                if (index >= 0) {
-                    appState.transactions[index] = { ...appState.transactions[index], ...transactionData };
-                }
-            } else {
-                transactionData.id = generateId();
-                appState.transactions.push(transactionData);
-            }
+      document.getElementById('quickAddForm').reset();
 
+      // Mostrar notificação específica para gastos de lazer
+      if (type === 'expense' && leisureCategories.includes(category)) {
+        showLeisureSpendingNotification(amount);
+      } else {
+        showToast('Transação adicionada!', 'success');
+      }
+
+      renderCurrentPage();
+      updateAlerts();
+    }
+
+    // Editar transação
+    function editTransaction(id) {
+      showModal(null, id);
+    }
+
+    // Excluir transação
+    function deleteTransaction(id) {
+      showConfirmModal(
+        'Tem certeza que deseja excluir esta transação?',
+        () => {
+          const index = appState.transactions.findIndex(t => t.id === id);
+          if (index >= 0) {
+            appState.transactions.splice(index, 1);
             saveTransactions();
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Salvar';
-
-            closeModal();
-
-            // Mostrar notificação específica para gastos de lazer
-            if (type === 'expense' && leisureCategories.includes(category)) {
-                showLeisureSpendingNotification(amount);
-            } else {
-                showToast(editId ? 'Transação atualizada!' : 'Transação adicionada!', 'success');
-            }
-
+            showToast('Transação excluída', 'success');
             renderCurrentPage();
             updateAlerts();
+          }
+          closeConfirmModal();
         }
+      );
+    }
 
-        // Mostrar notificação específica para gastos de lazer
-        function showLeisureSpendingNotification(amount) {
-            const stats = calculateStats();
-            const { currency, leisureLimit } = appState.settings;
-            const totalLeisureLimit = stats.totalIncome * leisureLimit / 100;
-            const remainingLeisure = Math.max(0, totalLeisureLimit - stats.leisureExpenses);
-            const percentageUsed = (stats.leisureExpenses / totalLeisureLimit) * 100;
+    // Atualizar alertas
+    function updateAlerts() {
+      const alertsContainer = document.getElementById('alertsContainer');
+      if (!alertsContainer) return;
 
-            let message = '';
-            let type = 'info';
+      const stats = calculateStats();
+      const alerts = [];
 
-            if (stats.leisureExpenses > totalLeisureLimit) {
-                message = `🚨 Limite de lazer ultrapassado! Você gastou ${currency} ${amount.toFixed(2)} e já ultrapassou em ${currency} ${(stats.leisureExpenses - totalLeisureLimit).toFixed(2)}`;
-                type = 'error';
-            } else if (percentageUsed >= 90) {
-                message = `⚠️ Quase no limite! Você gastou ${currency} ${amount.toFixed(2)}. Restam apenas ${currency} ${remainingLeisure.toFixed(2)} para lazer este mês`;
-                type = 'warning';
-            } else if (percentageUsed >= 70) {
-                message = `💰 Gasto de lazer: ${currency} ${amount.toFixed(2)}. Você ainda pode gastar ${currency} ${remainingLeisure.toFixed(2)} com lazer`;
-                type = 'warning';
-            } else {
-                message = `✅ Gasto de lazer: ${currency} ${amount.toFixed(2)}. Você ainda pode gastar ${currency} ${remainingLeisure.toFixed(2)} com lazer este mês`;
-                type = 'success';
-            }
+      if (stats.leisurePercentage > appState.settings.leisureLimit) {
+        alerts.push({
+          type: 'warning',
+          message: `Limite de lazer ultrapassado! ${stats.leisurePercentage.toFixed(1)}% de ${appState.settings.leisureLimit}%`
+        });
+      }
 
-            showToast(message, type);
-        }
+      if (stats.investmentPercentage >= appState.settings.investmentGoal) {
+        alerts.push({
+          type: 'success',
+          message: `Meta de investimento atingida! ${stats.investmentPercentage.toFixed(1)}%`
+        });
+      }
 
-        // Adição rápida
-        async function handleQuickAdd() {
-            const type = document.getElementById('quickType').value;
-            const category = document.getElementById('quickCategory').value;
-            const amount = parseFloat(document.getElementById('quickAmount').value);
-            const description = document.getElementById('quickDescription').value;
-            const paymentMethod = document.getElementById('quickPayment').value;
+      if (stats.balance < 0) {
+        alerts.push({
+          type: 'error',
+          message: `Saldo negativo! Você gastou mais do que ganhou este mês.`
+        });
+      }
 
-            if (!amount || amount <= 0) {
-                showToast('Por favor, insira um valor válido', 'error');
-                return;
-            }
-
-            const transactionData = {
-                id: generateId(),
-                type,
-                category,
-                amount,
-                description,
-                paymentMethod,
-                date: new Date().toISOString().split('T')[0],
-                createdAt: new Date().toISOString()
-            };
-
-            appState.transactions.push(transactionData);
-            saveTransactions();
-
-            document.getElementById('quickAddForm').reset();
-
-            // Mostrar notificação específica para gastos de lazer
-            if (type === 'expense' && leisureCategories.includes(category)) {
-                showLeisureSpendingNotification(amount);
-            } else {
-                showToast('Transação adicionada!', 'success');
-            }
-
-            renderCurrentPage();
-            updateAlerts();
-        }
-
-        // Editar transação
-        function editTransaction(id) {
-            showModal(null, id);
-        }
-
-        // Excluir transação
-        function deleteTransaction(id) {
-            showConfirmModal(
-                'Tem certeza que deseja excluir esta transação?',
-                () => {
-                    const index = appState.transactions.findIndex(t => t.id === id);
-                    if (index >= 0) {
-                        appState.transactions.splice(index, 1);
-                        saveTransactions();
-                        showToast('Transação excluída', 'success');
-                        renderCurrentPage();
-                        updateAlerts();
-                    }
-                    closeConfirmModal();
-                }
-            );
-        }
-
-        // Atualizar alertas
-        function updateAlerts() {
-            const alertsContainer = document.getElementById('alertsContainer');
-            if (!alertsContainer) return;
-
-            const stats = calculateStats();
-            const alerts = [];
-
-            if (stats.leisurePercentage > appState.settings.leisureLimit) {
-                alerts.push({
-                    type: 'warning',
-                    message: `Limite de lazer ultrapassado! ${stats.leisurePercentage.toFixed(1)}% de ${appState.settings.leisureLimit}%`
-                });
-            }
-
-            if (stats.investmentPercentage >= appState.settings.investmentGoal) {
-                alerts.push({
-                    type: 'success',
-                    message: `Meta de investimento atingida! ${stats.investmentPercentage.toFixed(1)}%`
-                });
-            }
-
-            if (stats.balance < 0) {
-                alerts.push({
-                    type: 'error',
-                    message: `Saldo negativo! Você gastou mais do que ganhou este mês.`
-                });
-            }
-
-            alertsContainer.innerHTML = alerts.map(alert => `
+      alertsContainer.innerHTML = alerts.map(alert => `
         <div class="bg-${alert.type === 'error' ? 'red' : alert.type === 'warning' ? 'yellow' : 'green'}-50 border border-${alert.type === 'error' ? 'red' : alert.type === 'warning' ? 'yellow' : 'green'}-200 rounded-lg p-4">
           <div class="flex items-start space-x-3">
             <svg class="w-5 h-5 text-${alert.type === 'error' ? 'red' : alert.type === 'warning' ? 'yellow' : 'green'}-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2395,105 +2436,105 @@
           </div>
         </div>
       `).join('');
-        }
+    }
 
-        // Toggle contador de salário
-        function toggleSalaryCounter() {
-            const stats = calculateStats();
+    // Toggle contador de salário
+    function toggleSalaryCounter() {
+      const stats = calculateStats();
 
-            if (appState.salaryCounter.isPlaying) {
-                clearInterval(appState.salaryCounter.interval);
-                appState.salaryCounter.isPlaying = false;
-                appState.salaryCounter.currentValue = 0;
-            } else {
-                appState.salaryCounter.isPlaying = true;
-                appState.salaryCounter.targetValue = stats.totalIncome;
-                appState.salaryCounter.currentValue = 0;
+      if (appState.salaryCounter.isPlaying) {
+        clearInterval(appState.salaryCounter.interval);
+        appState.salaryCounter.isPlaying = false;
+        appState.salaryCounter.currentValue = 0;
+      } else {
+        appState.salaryCounter.isPlaying = true;
+        appState.salaryCounter.targetValue = stats.totalIncome;
+        appState.salaryCounter.currentValue = 0;
 
-                const duration = 2000;
-                const steps = 60;
-                const increment = appState.salaryCounter.targetValue / steps;
+        const duration = 2000;
+        const steps = 60;
+        const increment = appState.salaryCounter.targetValue / steps;
 
-                appState.salaryCounter.interval = setInterval(() => {
-                    appState.salaryCounter.currentValue += increment;
+        appState.salaryCounter.interval = setInterval(() => {
+          appState.salaryCounter.currentValue += increment;
 
-                    if (appState.salaryCounter.currentValue >= appState.salaryCounter.targetValue) {
-                        appState.salaryCounter.currentValue = appState.salaryCounter.targetValue;
-                        clearInterval(appState.salaryCounter.interval);
-                        appState.salaryCounter.isPlaying = false;
-                    }
+          if (appState.salaryCounter.currentValue >= appState.salaryCounter.targetValue) {
+            appState.salaryCounter.currentValue = appState.salaryCounter.targetValue;
+            clearInterval(appState.salaryCounter.interval);
+            appState.salaryCounter.isPlaying = false;
+          }
 
-                    const display = document.getElementById('salaryDisplay');
-                    if (display) {
-                        display.textContent = `${appState.settings.currency} ${appState.salaryCounter.currentValue.toFixed(2)}`;
-                        display.classList.add('animate-count-up');
-                        setTimeout(() => display.classList.remove('animate-count-up'), 100);
-                    }
-                }, duration / steps);
-            }
-        }
+          const display = document.getElementById('salaryDisplay');
+          if (display) {
+            display.textContent = `${appState.settings.currency} ${appState.salaryCounter.currentValue.toFixed(2)}`;
+            display.classList.add('animate-count-up');
+            setTimeout(() => display.classList.remove('animate-count-up'), 100);
+          }
+        }, duration / steps);
+      }
+    }
 
-        // Mostrar toast
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
+    // Mostrar toast
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
 
-            const icons = {
-                success: '<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
-                error: '<svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
-                warning: '<svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>',
-                info: '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
-            };
+      const icons = {
+        success: '<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+        error: '<svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+        warning: '<svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>',
+        info: '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+      };
 
-            toastIcon.innerHTML = icons[type] || icons.info;
-            toastMessage.textContent = message;
-            toast.classList.remove('hidden');
+      toastIcon.innerHTML = icons[type] || icons.info;
+      toastMessage.textContent = message;
+      toast.classList.remove('hidden');
 
-            // Duração mais longa para notificações de lazer (mais importantes)
-            const duration = message.includes('lazer') || message.includes('limite') ? 6000 : 3000;
+      // Duração mais longa para notificações de lazer (mais importantes)
+      const duration = message.includes('lazer') || message.includes('limite') ? 6000 : 3000;
 
-            setTimeout(() => {
-                hideToast();
-            }, duration);
-        }
+      setTimeout(() => {
+        hideToast();
+      }, duration);
+    }
 
-        // Esconder toast
-        function hideToast() {
-            document.getElementById('toast').classList.add('hidden');
-        }
+    // Esconder toast
+    function hideToast() {
+      document.getElementById('toast').classList.add('hidden');
+    }
 
-        // Formatar data
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('pt-BR');
-        }
+    // Formatar data
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('pt-BR');
+    }
 
-        // Obter label de categoria
-        function getCategoryLabel(value) {
-            for (const type in categories) {
-                const cat = categories[type].find(c => c.value === value);
-                if (cat) return cat.label;
-            }
-            return value;
-        }
+    // Obter label de categoria
+    function getCategoryLabel(value) {
+      for (const type in categories) {
+        const cat = categories[type].find(c => c.value === value);
+        if (cat) return cat.label;
+      }
+      return value;
+    }
 
-        // Obter label de método de pagamento
-        function getPaymentLabel(value) {
-            const methods = {
-                cash: 'Dinheiro',
-                debit: 'Débito',
-                credit: 'Crédito',
-                pix: 'PIX',
-                transfer: 'Transferência'
-            };
-            return methods[value] || value;
-        }
+    // Obter label de método de pagamento
+    function getPaymentLabel(value) {
+      const methods = {
+        cash: 'Dinheiro',
+        debit: 'Débito',
+        credit: 'Crédito',
+        pix: 'PIX',
+        transfer: 'Transferência'
+      };
+      return methods[value] || value;
+    }
 
-        // Inicializar aplicação
-        init();
-    </script>
-    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'999dacbe52451cd3',t:'MTc2MjM1OTU4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    // Inicializar aplicação
+    init();
+  </script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'999dacbe52451cd3',t:'MTc2MjM1OTU4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
 
 </html>
